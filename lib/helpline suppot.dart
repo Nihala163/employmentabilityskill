@@ -52,11 +52,13 @@ class _HelpLineSupportState extends State<HelpLineSupport> {
     return Scaffold(
 
       body: _isConnected
-          ? WebView(
-        initialUrl:
-        'https://docs.google.com/forms/d/1RnofnB1J4zNPfScGleEYB5SENRM2j3B06sELWLH9wEU/edit', // Your web page URL here
-        javascriptMode: JavascriptMode.unrestricted,
-      )
+          ? SafeArea(
+            child: WebView(
+                    initialUrl:
+                    'https://docs.google.com/forms/d/1RnofnB1J4zNPfScGleEYB5SENRM2j3B06sELWLH9wEU/edit', // Your web page URL here
+                    javascriptMode: JavascriptMode.unrestricted,
+                  ),
+          )
           : Center(
         child: Text(
           'No internet connection. Please check your connection.',

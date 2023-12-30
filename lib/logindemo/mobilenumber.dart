@@ -2,23 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kmoiti/logindemo/verification.dart';
-
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class MobileNumber extends StatefulWidget {
-  const MobileNumber({super.key});
+  const MobileNumber({Key? key}) : super(key: key);
 
   @override
   State<MobileNumber> createState() => _MobileNumberState();
 }
 
 class _MobileNumberState extends State<MobileNumber> {
-  final TextEditingController phoneController=TextEditingController();
-  var phonenumber = " ";
+  final TextEditingController phoneController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  String formatPhoneNumber(String phoneNumber, String countryCode) {
+    // Remove any non-digit characters from the phone number
+    String digits = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+    // Combine the country code and digits
+    return '+$countryCode$digits';
+  }
+
   Future<void> otpnumber() async {
     try {
+      // Ensure the phone number starts with the selected country code
+      String phoneNumber = phoneController.text;
+      String formattedPhoneNumber = formatPhoneNumber(phoneNumber, '91'); // Adjust the country code as needed
+
       await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91$phonenumber',
+        phoneNumber: formattedPhoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await auth.signInWithCredential(credential);
         },
@@ -41,7 +53,7 @@ class _MobileNumberState extends State<MobileNumber> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Verification (verificationId: verificationId),
+              builder: (context) => Verification(verificationId: verificationId),
             ),
           );
         },
@@ -58,42 +70,41 @@ class _MobileNumberState extends State<MobileNumber> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: phoneController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Phone Number',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onChanged: (value) => phonenumber = value,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IntlPhoneField(
+              controller: phoneController,
+              decoration: InputDecoration(
+                labelText: 'Phone Number',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    otpnumber();
-                  },
-                  child: Text('Verify OTP'),
-                  style: ElevatedButton.styleFrom(fixedSize: Size.fromWidth(200)),
-                ),
-              ),
-            ]
-        )
+              initialCountryCode: 'IN',
+              onChanged: (phone) {
+                print(phone.completeNumber); // Prints the complete number.
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                otpnumber();
+              },
+              child: Text('Verify OTP'),
+              style: ElevatedButton.styleFrom(fixedSize: Size.fromWidth(200)),
+            ),
+          ),
+        ],
+      ),
     );
   }
-
 }
-

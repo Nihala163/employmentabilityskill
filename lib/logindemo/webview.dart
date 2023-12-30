@@ -52,11 +52,13 @@ class _HomeState extends State<Home> {
     return Scaffold(
 
       body: _isConnected
-          ? WebView(
-        initialUrl:
-        'https://www.kozhikode.directory/kmo-iti/i/1000', // Your web page URL here
-        javascriptMode: JavascriptMode.unrestricted,
-      )
+          ? SafeArea(
+            child: WebView(
+                    initialUrl:
+                    'https://www.kozhikode.directory/kmo-iti/i/1000', // Your web page URL here
+                    javascriptMode: JavascriptMode.unrestricted,
+                  ),
+          )
           : Center(
         child: Text(
           'No internet connection. Please check your connection.',
