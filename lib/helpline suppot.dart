@@ -50,7 +50,7 @@ class _HelpLineSupportState extends State<HelpLineSupport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
+
       body: _isConnected
           ? WebView(
         initialUrl:

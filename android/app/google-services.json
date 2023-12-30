@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "372857966232",
+    "project_id": "employability-training-skill",
+    "storage_bucket": "employability-training-skill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372857966232:android:929014c8e0a7a7aa950aed",
+        "android_client_info": {
+          "package_name": "com.hariapp.employabilityskillapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhXt0y4xOSPUsHEoLV6pBcQceblTMPCMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
